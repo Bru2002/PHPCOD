@@ -1,0 +1,53 @@
+<?php
+    if (($dados = fopen("vgsales.csv", "r")) !== FALSE){
+        $cabecalho = fgetcsv($dados, 0, ",");
+        //print_r($cabecalho);    
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <title>CSV</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
+
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tabela').DataTable();
+        });
+    </script>
+
+</head>
+<body>
+    <table id="tabela" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <?php
+                foreach($cabecalho as $coluna)
+                    echo '<th>'.$coluna.'</th>';    
+                ?>                
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+                while($linha = fgetcsv($dados, 0, ",")){
+                    echo '<tr>';
+                    foreach($linha as $coluna)
+                        echo '<td>'.$coluna.'</td>';                    
+                    echo '</tr>';
+                } //while
+                fclose($dados); //fecha o arquivo
+    } //fecha o if do fopen
+            ?>            
+        </tbody>
+    </table>
+</body>
+</html>
